@@ -56,7 +56,7 @@ class CodeWriter {
             throw new Error('Implement handle for handler', handler);
         }
 
-        this.write('// ' + command + ' ' + (arg1 || '') + ' ' + (arg2 || ''));
+        this.write('// --------- ' + command + ' ' + (arg1 || '') + ' ' + (arg2 || ''));
 
         return handler.handle(command, arg1, arg2);
     }
