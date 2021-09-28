@@ -1,12 +1,8 @@
-class Push {
+const { Base } = require('./base');
+
+class Push extends Base {
     constructor(writer) {
-        this.segmentToOffset = {
-            local: 'LCL',
-            argument: 'ARG',
-            this: 'THIS',
-            that: 'THAT',
-        };
-        this.writer = writer;
+        super(writer);
     }
     handle(command, segment, index) {
         // write to file comment with command name?
@@ -15,15 +11,7 @@ class Push {
             case 'argument':
             case 'this':
             case 'that':
-                const segmentOffset = this.segmentToOffset[segment];
-                // addr = segment + i
-                this.writer.write(`// addr = ${segmentOffset} + i`);
-                this.writer.write(`@${segmentOffset}`);
-                this.writer.write(`D=M`);
-                this.writer.write(`@${index}`);
-                this.writer.write('D=D+A');
-                this.writer.write('@addr');
-                this.writer.write('M=D');
+                this.setAddress(segment, address);
                 // *SP=*addr
                 this.writer.write('// *SP=*addr');
                 this.writer.write('@addr');
