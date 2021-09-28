@@ -1,6 +1,6 @@
 class Pop {
-    parse(command, segment, index) {
-        
+    handle(command, segment, index) {
+
     }
 }
 
