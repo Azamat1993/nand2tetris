@@ -1,11 +1,16 @@
 const { Base } = require('./base');
 
 class Arithmetic extends Base {
+    constructor(writer) {
+        super(writer);
+        this.labelIndex = 0;
+    }
     handle(command, arg1, arg2) {
         if (arg1 || arg2) {
             // can we just ignore it?
             throw new Error('command "' + command + '" should not take any params, which were provided: ' + arg1 + ', ' + arg2);
         }
+        this.labelIndex++;
         switch(command) {   
             case 'add':
             case 'sub':
@@ -61,6 +66,13 @@ class Arithmetic extends Base {
                     default:
                         throw new Error('no such command: ', command);
                 }
+                this.writer.write('@SP');
+                this.writer.write('A=M');
+                this.writer.write('M=D');
+                // SP++
+                this.writer.write('// SP++');
+                this.writer.write('@SP');
+                this.writer.write('M=M+1');
                 break;
             case 'not':
             case 'neg':
