@@ -1,11 +1,75 @@
-class Arithmetic {
+const { Base } = require('./base');
+
+class Arithmetic extends Base {
     handle(command, arg1, arg2) {
         if (arg1 || arg2) {
             // can we just ignore it?
             throw new Error('command "' + command + '" should not take any params, which were provided: ' + arg1 + ', ' + arg2);
         }
-
-        
+        switch(command) {   
+            case 'add':
+            case 'sub':
+            case 'and':
+            case 'or':
+            case 'lt':
+            case 'gt':
+            case 'eq':
+                // pop arg2
+                this.writer.write('// pop arg2');
+                // SP--
+                this.writer.write('// SP--');
+                this.writer.write('@SP');
+                this.writer.write('M=M-1');
+                this.writer.write('@SP');
+                this.writer.write('A=M');
+                this.writer.write('D=M');
+                this.writer.write('@arg2');
+                this.writer.write('M=D');
+                // pop arg1
+                this.writer.write('// pop arg1');
+                // SP--
+                this.writer.write('// SP--');
+                this.writer.write('@SP');
+                this.writer.write('M=M-1');
+                this.writer.write('@SP');
+                this.writer.write('A=M');
+                this.writer.write('D=M');
+                // up to that point: arg2 in @arg2, arg1 in D
+                break;
+            case 'not':
+            case 'neg':
+                // pop arg
+                this.writer.write('// pop arg');
+                // SP--
+                this.writer.write('// SP--');
+                this.writer.write('@SP');
+                this.writer.write('M=M-1');
+                this.writer.write('@SP');
+                this.writer.write('A=M');
+                this.writer.write('D=M');
+                // up to that point: arg in D
+                switch(command) {
+                    case 'not':
+                        // !D
+                        this.writer.write('// !D');
+                        this.writer.write('D=!D');
+                        break;
+                    case 'neg':
+                        // -D
+                        this.writer.write('// -D');
+                        this.writer.write('D=-D');
+                    default:
+                        throw new Error('no such command: ', command);
+                }
+                this.writer.write('@SP');
+                this.writer.write('A=M');
+                this.writer.write('M=D');
+                // SP++
+                this.writer.write('// SP++');
+                this.writer.write('@SP');
+                this.writer.write('M=M+1');
+                break;
+        }
     }
 }
 

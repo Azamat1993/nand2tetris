@@ -1,9 +1,6 @@
 const { Base } = require('./base');
 
 class Push extends Base {
-    constructor(writer) {
-        super(writer);
-    }
     handle(command, segment, index) {
         // write to file comment with command name?
         switch (segment) {
