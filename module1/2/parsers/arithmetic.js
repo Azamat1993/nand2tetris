@@ -35,6 +35,32 @@ class Arithmetic extends Base {
                 this.writer.write('A=M');
                 this.writer.write('D=M');
                 // up to that point: arg2 in @arg2, arg1 in D
+                switch(command) {
+                    case 'add':
+                        this.writer.write('@arg2');
+                        this.writer.write('D=D+M');
+                        break;
+                    case 'sub':
+                        this.writer.write('@arg2');
+                        this.writer.write('D=D-M');
+                        break;
+                    case 'and':
+                        this.writer.write('@arg2');
+                        this.writer.write('D=D&M');
+                        break;
+                    case 'or':
+                        this.writer.write('@arg2');
+                        this.writer.write('D=D|M');
+                        break;
+                    case 'lt':
+                        break;
+                    case 'gt':
+                        break;
+                    case 'eq':
+                        break;
+                    default:
+                        throw new Error('no such command: ', command);
+                }
                 break;
             case 'not':
             case 'neg':
@@ -69,6 +95,8 @@ class Arithmetic extends Base {
                 this.writer.write('@SP');
                 this.writer.write('M=M+1');
                 break;
+            default:
+                throw new Error('no such command: ', command);
         }
     }
 }
