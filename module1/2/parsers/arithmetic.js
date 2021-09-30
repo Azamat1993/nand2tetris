@@ -10,7 +10,6 @@ class Arithmetic extends Base {
             // can we just ignore it?
             throw new Error('command "' + command + '" should not take any params, which were provided: ' + arg1 + ', ' + arg2);
         }
-        this.labelIndex++;
         switch(command) {   
             case 'add':
             case 'sub':
@@ -58,10 +57,29 @@ class Arithmetic extends Base {
                         this.writer.write('D=D|M');
                         break;
                     case 'lt':
-                        break;
                     case 'gt':
-                        break;
                     case 'eq':
+                        this.writer.write('@arg2');
+                        this.writer.write('D=D-M');
+                        this.writer.write(`@IF_${this.labelIndex}`);
+                        switch(command) {
+                            case 'lt':
+                                this.writer.write('D;JLT');
+                                break;
+                            case 'gt':
+                                this.writer.write('D;JGT');
+                                break;
+                            case 'eq':
+                                this.writer.write('D;JEQ');
+                                break;
+                        }
+                        this.writer.write('D=0');
+                        this.writer.write(`@COMPLETE_${this.labelIndex}`);
+                        this.writer.write('0;JMP');
+                        this.writer.write(`(IF_${this.labelIndex})`);
+                        this.writer.write('D=-1');
+                        this.writer.write(`(COMPLETE_${this.labelIndex})`);
+                        this.labelIndex++;
                         break;
                     default:
                         throw new Error('no such command: ', command);
