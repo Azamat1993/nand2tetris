@@ -25,3 +25,27 @@ D=M
 A=M
 M=D
 // --------- add  
+// pop arg2
+// SP--
+@SP
+M=M-1
+@SP
+A=M
+D=M
+@arg2
+M=D
+// pop arg1
+// SP--
+@SP
+M=M-1
+@SP
+A=M
+D=M
+@arg2
+D=D+M
+@SP
+A=M
+M=D
+// SP++
+@SP
+M=M+1
