@@ -1,5 +1,6 @@
 const { Arithmetic, Push, Pop } = require('./parsers');
 const fs = require('fs');
+const path = require('path');
 class CodeWriter {
     constructor(filePath) {
         this.COMMAND_HANDLERS = {
@@ -35,6 +36,7 @@ class CodeWriter {
         };
 
         this.stream = fs.createWriteStream(filePath);
+        this.filePath = filePath;
     }
 
     write(line) {
@@ -58,7 +60,7 @@ class CodeWriter {
 
         this.write('// --------- ' + command + ' ' + (arg1 || '') + ' ' + (arg2 || ''));
 
-        return handler.handle(command, arg1, arg2);
+        return handler.handle(command, arg1, arg2, path.parse(this.filePath).name);
     }
 }
 

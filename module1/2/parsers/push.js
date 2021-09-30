@@ -1,7 +1,7 @@
 const { Base } = require('./base');
 
 class Push extends Base {
-    handle(command, segment, index) {
+    handle(command, segment, index, fileName) {
         // write to file comment with command name?
         switch (segment) {
             case 'local':
@@ -30,6 +30,20 @@ class Push extends Base {
                 this.writer.write(`D=A`);
                 this.writer.write('@SP');
                 this.writer.write('M=D');
+                this.writer.write('// SP++');
+                this.writer.write('@SP');
+                this.writer.write('M=M+1');
+                break;
+            case 'static':
+                // @fileName.index
+                this.writer.write(`@${fileName}.${index}`);
+                this.writer.write('D=M');
+
+                this.writer.write('@SP');
+                this.writer.write('A=M');
+                this.writer.write('M=D');
+
+                // SP++
                 this.writer.write('// SP++');
                 this.writer.write('@SP');
                 this.writer.write('M=M+1');

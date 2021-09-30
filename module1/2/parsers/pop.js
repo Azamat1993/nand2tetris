@@ -1,7 +1,7 @@
 const { Base } = require('./base');
 
 class Pop extends Base {
-    handle(command, segment, index) {
+    handle(command, segment, index, fileName) {
         // write to file comment with command name?
         switch (segment) {
             case 'local':
@@ -23,6 +23,19 @@ class Pop extends Base {
                 break;
             case 'constant':
                 // do nothing, such case cannot exist
+                break;
+            case 'static':
+                // SP--
+                this.writer.write('// SP--');
+                this.writer.write('@SP');
+                this.writer.write('M=M-1');
+                // D=stack.pop()
+                this.writer.write('@SP');
+                this.writer.write('A=M');
+                this.writer.write('D=M');
+                // @fileName.index
+                this.writer.write(`@${fileName}.${index}`);
+                this.writer.write('M=D');
                 break;
             default:
                 throw new Error('no such segment to push: ', segment);
