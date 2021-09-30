@@ -8,6 +8,7 @@ class Push extends Base {
             case 'argument':
             case 'this':
             case 'that':
+            case 'temp':
                 this.setAddress(segment, address);
                 // *SP=*addr
                 this.writer.write('// *SP=*addr');

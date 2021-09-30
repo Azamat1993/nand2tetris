@@ -8,6 +8,7 @@ class Pop extends Base {
             case 'argument':
             case 'this':
             case 'that':
+            case 'temp':
                 this.setAddress(segment, index);
                 // SP--
                 this.writer.write('// SP--');
